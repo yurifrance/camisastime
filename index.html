@@ -575,7 +575,7 @@
      cat: "selecao" | "europeu" | "brasileiro" | "retro"
   ──────────────────────────────────────────────────────────────────── */
   const produtos = [
-    { id: 1,  nome: "Brasil",            time: "Seleção Brasileira",    cat: "selecao",    img: "brasil.jpeg", preco: 149 },
+    { id: 1,  nome: "Brasil",            time: "Seleção Brasileira",    cat: "selecao",    img: "brasil.jpeg", preco: 150 },
     { id: 2,  nome: "Portugal",          time: "Seleção Portuguesa",    cat: "selecao",    img: "portugal.jpeg", preco: 149 },
     { id: 3,  nome: "Argentina",         time: "Seleção Argentina",     cat: "selecao",    img: "argentina.jpeg", preco: 149 },
     { id: 4,  nome: "França",            time: "Seleção Francesa",      cat: "selecao",    img: "franca.jpeg", preco: 149 },
@@ -620,7 +620,7 @@
     cat.innerHTML = lista.map(p => `
       <div class="shirt-card ${selecionado && selecionado.id === p.id ? 'selected' : ''}" onclick="selecionarCamisa(${p.id})">
         <div class="check-badge">✓</div>
-        <div class="shirt-emoji"><img src="${p.img}" alt="${p.nome}" onerror="this.style.display='none'"></div>
+        <div class="shirt-emoji img"><img src="${p.img}" alt="${p.nome}" onerror="this.style.display='none'"></div>
         <div class="shirt-name">${p.nome}</div>
         <div class="shirt-type">${p.time}</div>
         <div class="shirt-price">R$ ${p.preco}</div>
