@@ -184,25 +184,27 @@
   .shirt-type { font-size: 11px; color: #888; margin-bottom: 8px; }
   .shirt-price { font-size: 14px; font-weight: 700; color: #1a7a3a; }
   .shirt-emoji img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.check-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #0a0a0a;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
   
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: #0a0a0a;
-    color: #fff;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-  }
-  .shirt-card.selected .check-badge { display: flex; }
+  .shirt-card.selected { display: flex; }
 
   /* ── SIDEBAR ── */
   .sidebar { position: sticky; top: 80px; }
@@ -559,33 +561,33 @@
   ──────────────────────────────────────────────────────────────────── */
   const produtos = [
     /* ── SELEÇÕES ── */
-    { id: 1,  nome: "Brasil",            time: "Seleção Brasileira",    cat: "selecao",    img: "imagens/brasil.jpg",            preco: 149 },
-    { id: 2,  nome: "Portugal",          time: "Seleção Portuguesa",    cat: "selecao",    img: "imagens/portugal.jpg",          preco: 149 },
-    { id: 3,  nome: "Argentina",         time: "Seleção Argentina",     cat: "selecao",    img: "imagens/argentina.jpg",         preco: 149 },
-    { id: 4,  nome: "França",            time: "Seleção Francesa",      cat: "selecao",    img: "imagens/franca.jpg",            preco: 149 },
-    { id: 5,  nome: "Alemanha",          time: "Seleção Alemã",         cat: "selecao",    img: "imagens/alemanha.jpg",          preco: 149 },
-    { id: 6,  nome: "Espanha",           time: "Seleção Espanhola",     cat: "selecao",    img: "imagens/espanha.jpg",           preco: 149 },
+    { id: 1,  nome: "Brasil",            time: "Seleção Brasileira",    cat: "selecao",    img: "src/brasil.jpeg",            preco: 149 },
+    { id: 2,  nome: "Portugal",          time: "Seleção Portuguesa",    cat: "selecao",    img: "src/portugal.jpeg",          preco: 149 },
+    { id: 3,  nome: "Argentina",         time: "Seleção Argentina",     cat: "selecao",    img: "src/argentina.jpeg",         preco: 149 },
+    { id: 4,  nome: "França",            time: "Seleção Francesa",      cat: "selecao",    img: "src/franca.jpeg",            preco: 149 },
+    { id: 5,  nome: "Alemanha",          time: "Seleção Alemã",         cat: "selecao",    img: "src/alemanha.jpeg",          preco: 149 },
+    { id: 6,  nome: "Espanha",           time: "Seleção Espanhola",     cat: "selecao",    img: "src/espanha.jpeg",           preco: 149 },
     /* ── EUROPEUS ── */
-    { id: 7,  nome: "Real Madrid",       time: "La Liga",               cat: "europeu",    img: "imagens/real-madrid.jpg",       preco: 159 },
-    { id: 8,  nome: "Barcelona",         time: "La Liga",               cat: "europeu",    img: "imagens/barcelona.jpg",         preco: 159 },
-    { id: 9,  nome: "Manchester United", time: "Premier League",        cat: "europeu",    img: "imagens/manchester-united.jpg", preco: 159 },
-    { id: 10, nome: "Manchester City",   time: "Premier League",        cat: "europeu",    img: "imagens/manchester-city.jpg",   preco: 159 },
-    { id: 11, nome: "PSG",               time: "Ligue 1",               cat: "europeu",    img: "imagens/psg.jpg",               preco: 159 },
-    { id: 12, nome: "Juventus",          time: "Serie A",               cat: "europeu",    img: "imagens/juventus.jpg",          preco: 159 },
+    { id: 7,  nome: "Real Madrid",       time: "La Liga",               cat: "europeu",    img: "src/real-madrid.jpeg",       preco: 159 },
+    { id: 8,  nome: "Barcelona",         time: "La Liga",               cat: "europeu",    img: "src/barcelona.jpeg",         preco: 159 },
+    { id: 9,  nome: "Manchester United", time: "Premier League",        cat: "europeu",    img: "src/manchester-united.jpeg", preco: 159 },
+    { id: 10, nome: "Manchester City",   time: "Premier League",        cat: "europeu",    img: "src/manchester-city.jpeg",   preco: 159 },
+    { id: 11, nome: "PSG",               time: "Ligue 1",               cat: "europeu",    img: "src/psg.jpeg",               preco: 159 },
+    { id: 12, nome: "Juventus",          time: "Serie A",               cat: "europeu",    img: "src/juventus.jpeg",          preco: 159 },
     /* ── BRASILEIROS ── */
-    { id: 13, nome: "Flamengo",          time: "Brasileirão",           cat: "brasileiro", img: "imagens/flamengo.jpg",          preco: 139 },
-    { id: 14, nome: "Corinthians",       time: "Brasileirão",           cat: "brasileiro", img: "imagens/corinthians.jpg",       preco: 139 },
-    { id: 15, nome: "Palmeiras",         time: "Brasileirão",           cat: "brasileiro", img: "imagens/palmeiras.jpg",         preco: 139 },
-    { id: 16, nome: "São Paulo",         time: "Brasileirão",           cat: "brasileiro", img: "imagens/sao-paulo.jpg",         preco: 139 },
-    { id: 17, nome: "Grêmio",            time: "Brasileirão",           cat: "brasileiro", img: "imagens/gremio.jpg",            preco: 139 },
-    { id: 18, nome: "Cruzeiro",          time: "Brasileirão",           cat: "brasileiro", img: "imagens/cruzeiro.jpg",          preco: 139 },
+    { id: 13, nome: "Flamengo",          time: "Brasileirão",           cat: "brasileiro", img: "src/flamengo.jpeg",          preco: 139 },
+    { id: 14, nome: "Corinthians",       time: "Brasileirão",           cat: "brasileiro", img: "src/corinthians.jpeg",       preco: 139 },
+    { id: 15, nome: "Palmeiras",         time: "Brasileirão",           cat: "brasileiro", img: "src/palmeiras.jpeg",         preco: 139 },
+    { id: 16, nome: "São Paulo",         time: "Brasileirão",           cat: "brasileiro", img: "src/sao-paulo.jpeg",         preco: 139 },
+    { id: 17, nome: "Grêmio",            time: "Brasileirão",           cat: "brasileiro", img: "src/gremio.jpeg",            preco: 139 },
+    { id: 18, nome: "Cruzeiro",          time: "Brasileirão",           cat: "brasileiro", img: "src/cruzeiro.jpeg",          preco: 139 },
     /* ── RETRÔ ── */
-    { id: 19, nome: "Brasil 1970",       time: "Retrô — Seleção",       cat: "retro",      img: "imagens/brasil-1970.jpg",       preco: 169 },
-    { id: 20, nome: "Brasil 1994",       time: "Retrô — Seleção",       cat: "retro",      img: "imagens/brasil-1994.jpg",       preco: 169 },
-    { id: 21, nome: "Italia 1982",       time: "Retrô — Seleção",       cat: "retro",      img: "imagens/italia-1982.jpg",       preco: 169 },
-    { id: 22, nome: "Argentina 1986",    time: "Retrô — Seleção",       cat: "retro",      img: "imagens/argentina-1986.jpg",    preco: 169 },
-    { id: 23, nome: "Ajax 1995",         time: "Retrô — Clube",         cat: "retro",      img: "imagens/ajax-1995.jpg",         preco: 169 },
-    { id: 24, nome: "Barcelona 1999",    time: "Retrô — Clube",         cat: "retro",      img: "imagens/barcelona-1999.jpg",    preco: 169 },
+    { id: 19, nome: "Brasil 1970",       time: "Retrô — Seleção",       cat: "retro",      img: "src/brasil-1970.jpeg",       preco: 169 },
+    { id: 20, nome: "Brasil 1994",       time: "Retrô — Seleção",       cat: "retro",      img: "src/brasil-1994.jpeg",       preco: 169 },
+    { id: 21, nome: "Italia 1982",       time: "Retrô — Seleção",       cat: "retro",      img: "src/italia-1982.jpeg",       preco: 169 },
+    { id: 22, nome: "Argentina 1986",    time: "Retrô — Seleção",       cat: "retro",      img: "src/argentina-1986.jpeg",    preco: 169 },
+    { id: 23, nome: "Ajax 1995",         time: "Retrô — Clube",         cat: "retro",      img: "src/ajax-1995.jpeg",         preco: 169 },
+    { id: 24, nome: "Barcelona 1999",    time: "Retrô — Clube",         cat: "retro",      img: "src/barcelona-1999.jpeg",    preco: 169 },
   ];
 
   /* ── NÚMERO DO WHATSAPP ────────────────────────────────────────────
