@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CanisStore — Camisas de Time</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f5;
+    color: #111;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+  .logo span { color: #e8c84a; }
+  .header-whats {
+    background: #25D366;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #fff;
+    padding: 3.5rem 1.5rem 3rem;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(232,200,74,0.15);
+    border: 1px solid rgba(232,200,74,0.3);
+    color: #e8c84a;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.03em;
+  }
+  .hero h1 em { color: #e8c84a; font-style: normal; }
+  .hero p {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-pills {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .hero-pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #aaa;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { order: 2; }
+    .main-col { order: 1; }
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  /* ── FILTER TABS ── */
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .filter-btn {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    color: #555;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .filter-btn:hover { border-color: #aaa; color: #111; }
+  .filter-btn.active {
+    background: #0a0a0a;
+    color: #fff;
+    border-color: #0a0a0a;
+  }
+
+  /* ── CATALOG GRID ── */
+  .catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .shirt-card {
+    background: #fff;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 1rem 0.875rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    user-select: none;
+  }
+  .shirt-card:hover { border-color: #bbb; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+  .shirt-card.selected { border: 2px solid #0a0a0a; background: #fafafa; }
+  .shirt-emoji {
+    font-size: 2.25rem;
+    width: 100%;
+    aspect-ratio: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .shirt-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .shirt-type { font-size: 11px; color: #888; margin-bottom: 8px; }
+  .shirt-price { font-size: 14px; font-weight: 700; color: #1a7a3a; }
+  .check-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #0a0a0a;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+  .shirt-card.selected .check-badge { display: flex; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { position: sticky; top: 80px; }
+
+  .order-box {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .order-header {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .order-body { padding: 1.25rem; }
+
+  /* ── FORM ELEMENTS ── */
+  .field-group { margin-bottom: 14px; }
+  .field-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .field-group input, .field-group select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #111;
+    background: #fafafa;
+    transition: border-color 0.15s;
+  }
+  .field-group input:focus, .field-group select:focus {
+    outline: none;
+    border-color: #0a0a0a;
+    background: #fff;
+  }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* ── SIZE SELECTOR ── */
+  .sizes {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .size-btn {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+    width: 44px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .size-btn:hover { border-color: #aaa; color: #111; }
+  .size-btn.active { background: #0a0a0a; color: #fff; border-color: #0a0a0a; }
+
+  /* ── QTY ── */
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .qty-btn {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    color: #111;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .qty-btn:hover { background: #eee; }
+  .qty-num { font-size: 16px; font-weight: 700; min-width: 20px; text-align: center; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: #f0f0f0; margin: 1rem 0; }
+
+  /* ── SUMMARY ── */
+  .summary-empty {
+    text-align: center;
+    color: #aaa;
+    font-size: 13px;
+    padding: 1.5rem 0;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 7px;
+  }
+  .summary-row.total {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+    margin-top: 4px;
+  }
+  .summary-row.total span:last-child { color: #1a7a3a; }
+  .selected-shirt-tag {
+    background: #f0f0f0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* ── CTA BUTTON ── */
+  .whatsapp-btn {
+    width: 100%;
+    padding: 14px;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.15s;
+    margin-top: 1rem;
+  }
+  .whatsapp-btn:hover { background: #20b858; }
+  .whatsapp-btn:active { transform: scale(0.98); }
+  .whatsapp-icon {
+    width: 22px;
+    height: 22px;
+    fill: #fff;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: #aaa;
+    text-align: center;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* ── INFO BANNER ── */
+  .info-strip {
+    background: #fff;
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 0.875rem 1.5rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #555;
+    font-weight: 500;
+  }
+  .info-item span { font-size: 1.1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0a0a0a;
+    color: #555;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 12px;
+    margin-top: 3rem;
+  }
+  footer strong { color: #e8c84a; }
+
+  /* ── SELECTED PRODUCT INDICATOR ── */
+  .product-selected-notice {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #166534;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .product-selected-notice.visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Canis<span>Store</span></div>
+  <a class="header-whats" href="https://wa.me/351932144202" target="_blank">
+    <!-- WhatsApp icon SVG -->
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.122 1.524 5.855L0 24l6.335-1.54A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.007-1.375l-.36-.214-3.73.978.994-3.633-.235-.374A9.795 9.795 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+    Falar no WhatsApp
+  </a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🌍 Seleções · Times Europeus · Brasileiros · Retrô</div>
+  <h1>Camisas de time<br><em>pra quem é fiel</em></h1>
+  <p>Veste seu time com estilo — camisas retrô e atuais entregues na sua casa</p>
+  <div class="hero-pills">
+    <div class="hero-pill"><span>🚚</span> Frete rastreado</div>
+    <div class="hero-pill"><span>💳</span> PIX ou transferência</div>
+    <div class="hero-pill"><span>🔒</span> Compra 100% segura</div>
+    <div class="hero-pill"><span>📦</span> Prazo: 20 a 40 dias</div>
+  </div>
+</div>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-item"><span>⚽</span> Mais de 40 opções</div>
+  <div class="info-item"><span>🏆</span> Seleções e grandes clubes</div>
+  <div class="info-item"><span>📲</span> Pedido direto pelo WhatsApp</div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+  <!-- LEFT: CATALOG -->
+  <div class="main-col">
+
+    <div class="section-label">Filtrar por categoria</div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filtrar('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filtrar('selecao', this)">🌍 Seleções</button>
+      <button class="filter-btn" onclick="filtrar('europeu', this)">🏟️ Times Europeus</button>
+      <button class="filter-btn" onclick="filtrar('brasileiro', this)">🇧🇷 Times Brasileiros</button>
+      <button class="filter-btn" onclick="filtrar('retro', this)">⭐ Retrô</button>
+    </div>
+
+    <div class="section-label">Escolha sua camisa</div>
+    <div class="catalog" id="catalog"></div>
+
+  </div>
+
+  <!-- RIGHT: ORDER FORM -->
+  <div class="sidebar">
+    <div class="order-box">
+      <div class="order-header">🛒 Seu pedido</div>
+      <div class="order-body">
+
+        <div class="product-selected-notice" id="product-notice"></div>
+
+        <div class="field-group">
+          <label>Tamanho</label>
+          <div class="sizes">
+            <button class="size-btn" onclick="escolherTamanho('P', this)">P</button>
+            <button class="size-btn" onclick="escolherTamanho('M', this)">M</button>
+            <button class="size-btn" onclick="escolherTamanho('G', this)">G</button>
+            <button class="size-btn" onclick="escolherTamanho('GG', this)">GG</button>
+            <button class="size-btn" onclick="escolherTamanho('XGG', this)">XGG</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Quantidade</label>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="mudarQtd(-1)">−</button>
+            <span class="qty-num" id="qty-display">1</span>
+            <button class="qty-btn" onclick="mudarQtd(1)">+</button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field-group">
+          <label>Seu nome</label>
+          <input type="text" id="nome" placeholder="Ex: João Silva" oninput="atualizarResumo()">
+        </div>
+
+        <div class="field-group">
+          <label>WhatsApp / Telefone</label>
+          <input type="text" id="telefone" placeholder="(11) 99999-9999" oninput="atualizarResumo()">
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field-group">
+          <label>Endereço de entrega</label>
+          <div class="field-row" style="margin-bottom: 10px;">
+            <input type="text" id="cep" placeholder="CEP: 00000-000" oninput="atualizarResumo()">
+            <input type="text" id="cidade" placeholder="Cidade / UF" oninput="atualizarResumo()">
+          </div>
+          <input type="text" id="rua" placeholder="Rua, número" oninput="atualizarResumo()" style="width:100%; margin-bottom:8px;">
+          <input type="text" id="complemento" placeholder="Complemento (opcional)">
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- RESUMO -->
+        <div id="resumo">
+          <div class="summary-empty">⬅️ Selecione uma camisa para montar seu pedido</div>
+        </div>
+
+        <button class="whatsapp-btn" onclick="enviarWhatsApp()">
+          <svg class="whatsapp-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.122 1.524 5.855L0 24l6.335-1.54A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.007-1.375l-.36-.214-3.73.978.994-3.633-.235-.374A9.795 9.795 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+          Finalizar pedido pelo WhatsApp
+        </button>
+
+        <p class="disclaimer">
+          Ao clicar, você será direcionado ao WhatsApp para confirmar o pedido e receber as instruções de pagamento via PIX.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>CanisStore</strong> — Camisas de time pra quem é fiel</p>
+  <p style="margin-top:6px;">Dúvidas? <a href="https://wa.me/5511999999999" style="color:#e8c84a;">Fale conosco no WhatsApp</a></p>
+</footer>
+
+<script>
+  /* ── DADOS DO CATÁLOGO ─────────────────────────────────────────────
+     Edite aqui para adicionar/remover produtos.
+     cat: "selecao" | "europeu" | "brasileiro" | "retro"
+  ──────────────────────────────────────────────────────────────────── */
+  const produtos = [
+    { id: 1,  nome: "Brasil",            time: "Seleção Brasileira",    cat: "selecao",    emoji: "🇧🇷", preco: 149 },
+    { id: 2,  nome: "Portugal",          time: "Seleção Portuguesa",    cat: "selecao",    emoji: "🇵🇹", preco: 149 },
+    { id: 3,  nome: "Argentina",         time: "Seleção Argentina",     cat: "selecao",    emoji: "🇦🇷", preco: 149 },
+    { id: 4,  nome: "França",            time: "Seleção Francesa",      cat: "selecao",    emoji: "🇫🇷", preco: 149 },
+    { id: 5,  nome: "Alemanha",          time: "Seleção Alemã",         cat: "selecao",    emoji: "🇩🇪", preco: 149 },
+    { id: 6,  nome: "Espanha",           time: "Seleção Espanhola",     cat: "selecao",    emoji: "🇪🇸", preco: 149 },
+    { id: 7,  nome: "Real Madrid",       time: "La Liga",               cat: "europeu",    emoji: "⚪", preco: 159 },
+    { id: 8,  nome: "Barcelona",         time: "La Liga",               cat: "europeu",    emoji: "🔵", preco: 159 },
+    { id: 9,  nome: "Manchester United", time: "Premier League",        cat: "europeu",    emoji: "🔴", preco: 159 },
+    { id: 10, nome: "Manchester City",   time: "Premier League",        cat: "europeu",    emoji: "🩵", preco: 159 },
+    { id: 11, nome: "PSG",              time: "Ligue 1",               cat: "europeu",    emoji: "🗼", preco: 159 },
+    { id: 12, nome: "Juventus",         time: "Serie A",               cat: "europeu",    emoji: "⚫", preco: 159 },
+    { id: 13, nome: "Flamengo",         time: "Brasileirão",           cat: "brasileiro", emoji: "🔴", preco: 139 },
+    { id: 14, nome: "Corinthians",      time: "Brasileirão",           cat: "brasileiro", emoji: "⚫", preco: 139 },
+    { id: 15, nome: "Palmeiras",        time: "Brasileirão",           cat: "brasileiro", emoji: "💚", preco: 139 },
+    { id: 16, nome: "São Paulo",        time: "Brasileirão",           cat: "brasileiro", emoji: "🔺", preco: 139 },
+    { id: 17, nome: "Grêmio",          time: "Brasileirão",           cat: "brasileiro", emoji: "💙", preco: 139 },
+    { id: 18, nome: "Cruzeiro",        time: "Brasileirão",           cat: "brasileiro", emoji: "🌟", preco: 139 },
+    { id: 19, nome: "Brasil 1970",      time: "Retrô — Seleção",       cat: "retro",      emoji: "🏆", preco: 169 },
+    { id: 20, nome: "Brasil 1994",      time: "Retrô — Seleção",       cat: "retro",      emoji: "🥇", preco: 169 },
+    { id: 21, nome: "Italia 1982",      time: "Retrô — Seleção",       cat: "retro",      emoji: "🇮🇹", preco: 169 },
+    { id: 22, nome: "Argentina 1986",   time: "Retrô — Seleção",       cat: "retro",      emoji: "⭐", preco: 169 },
+    { id: 23, nome: "Ajax 1995",        time: "Retrô — Clube",         cat: "retro",      emoji: "🏴", preco: 169 },
+    { id: 24, nome: "Barcelona 1999",   time: "Retrô — Clube",         cat: "retro",      emoji: "🏅", preco: 169 },
+  ];
+
+  /* ── NÚMERO DO WHATSAPP ────────────────────────────────────────────
+     Substitua pelo seu número com DDI + DDD (sem espaços ou símbolos)
+     Exemplo Brasil: 5511999999999
+  ──────────────────────────────────────────────────────────────────── */
+  const NUMERO_WHATSAPP = "5511999999999";
+
+  /* ── ESTADO ── */
+  let selecionado = null;
+  let tamanho = null;
+  let qtd = 1;
+  let filtroAtivo = "todos";
+
+  /* ── RENDERIZAR CATÁLOGO ── */
+  function renderizar(filtro) {
+    const lista = filtro === "todos" ? produtos : produtos.filter(p => p.cat === filtro);
+    const cat = document.getElementById("catalog");
+    cat.innerHTML = lista.map(p => `
+      <div class="shirt-card ${selecionado && selecionado.id === p.id ? 'selected' : ''}" onclick="selecionarCamisa(${p.id})">
+        <div class="check-badge">✓</div>
+        <div class="shirt-emoji">${p.emoji}</div>
+        <div class="shirt-name">${p.nome}</div>
+        <div class="shirt-type">${p.time}</div>
+        <div class="shirt-price">R$ ${p.preco}</div>
+      </div>
+    `).join("");
+  }
+
+  function filtrar(cat, btn) {
+    filtroAtivo = cat;
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderizar(cat);
+  }
+
+  function selecionarCamisa(id) {
+    selecionado = produtos.find(p => p.id === id);
+    renderizar(filtroAtivo);
+    const notice = document.getElementById("product-notice");
+    notice.textContent = `✅ Selecionada: ${selecionado.emoji} ${selecionado.nome}`;
+    notice.classList.add("visible");
+    atualizarResumo();
+    // Em mobile, rola até o formulário
+    if (window.innerWidth < 768) {
+      document.querySelector(".sidebar").scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  function escolherTamanho(s, btn) {
+    tamanho = s;
+    document.querySelectorAll(".size-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    atualizarResumo();
+  }
+
+  function mudarQtd(delta) {
+    qtd = Math.max(1, qtd + delta);
+    document.getElementById("qty-display").textContent = qtd;
+    atualizarResumo();
+  }
+
+  function atualizarResumo() {
+    const el = document.getElementById("resumo");
+    if (!selecionado) {
+      el.innerHTML = '<div class="summary-empty">⬅️ Selecione uma camisa para montar seu pedido</div>';
+      return;
+    }
+    const total = selecionado.preco * qtd;
+    el.innerHTML = `
+      <div class="summary-row"><span>Camisa</span><span>${selecionado.emoji} ${selecionado.nome}</span></div>
+      <div class="summary-row"><span>Categoria</span><span>${selecionado.time}</span></div>
+      <div class="summary-row"><span>Tamanho</span><span>${tamanho || "—"}</span></div>
+      <div class="summary-row"><span>Quantidade</span><span>${qtd}x</span></div>
+      <div class="summary-row total"><span>Total</span><span>R$ ${total}</span></div>
+    `;
+  }
+
+  /* ── ENVIAR PARA WHATSAPP ── */
+  function enviarWhatsApp() {
+    if (!selecionado) {
+      alert("Por favor, selecione uma camisa antes de continuar.");
+      return;
+    }
+    if (!tamanho) {
+      alert("Por favor, selecione um tamanho.");
+      return;
+    }
+    const nome   = document.getElementById("nome").value.trim();
+    const tel    = document.getElementById("telefone").value.trim();
+    const cep    = document.getElementById("cep").value.trim();
+    const rua    = document.getElementById("rua").value.trim();
+    const cidade = document.getElementById("cidade").value.trim();
+    const comp   = document.getElementById("complemento").value.trim();
+
+    if (!nome) { alert("Por favor, informe seu nome."); return; }
+    if (!rua || !cep || !cidade) { alert("Por favor, preencha o endereço completo."); return; }
+
+    const total = selecionado.preco * qtd;
+
+    const mensagem =
+`🛍️ *NOVO PEDIDO — CanisStore*
+
+━━━━━━━━━━━━━━━━━━━━
+🎽 *PRODUTO*
+Camisa: ${selecionado.nome} (${selecionado.time})
+Tamanho: ${tamanho}
+Quantidade: ${qtd}x
+*Total: R$ ${total}*
+━━━━━━━━━━━━━━━━━━━━
+👤 *CLIENTE*
+Nome: ${nome}${tel ? '\nTelefone: ' + tel : ''}
+━━━━━━━━━━━━━━━━━━━━
+📦 *ENDEREÇO DE ENTREGA*
+${rua}${comp ? ', ' + comp : ''}
+${cidade}
+CEP: ${cep}
+━━━━━━━━━━━━━━━━━━━━
+
+Aguardo confirmação e instruções de pagamento! 🙏`;
+
+    const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+    window.open(url, "_blank");
+  }
+
+  /* ── INIT ── */
+  renderizar("todos");
+</script>
+</body>
+</html>
